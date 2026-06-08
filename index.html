@@ -1,505 +1,517 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concours Spécial d'Excellence | CREDO ENGINEERING</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #007A87;
-            --primary-light: #e6f2f3;
-            --primary-dark: #005F69;
-            --accent: #A51C24;
-            --accent-light: #fbeeed;
-            --text-main: #1A202C;
-            --text-muted: #718096;
-            --bg-body: #F8FAFC;
-            --card-shadow: 0 10px 30px -5px rgba(0, 122, 135, 0.08);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.7;
-            padding-bottom: 60px;
-        }
-        .credo-header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 122, 135, 0.1);
-            padding: 20px 0;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-        }
-        .credo-header h2 {
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: 1.5px;
-            color: var(--primary);
-        }
-        .main-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 24px;
-        }
-        .flyer-showcase {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        .flyer-card {
-            background: #ffffff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            transition: var(--transition);
-        }
-        .flyer-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0, 122, 135, 0.12);
-        }
-        .flyer-card img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-        }
-        .intro-box {
-            background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%);
-            border-left: 6px solid var(--accent);
-            padding: 35px;
-            border-radius: 16px;
-            margin-bottom: 40px;
-            box-shadow: var(--card-shadow);
-        }
-        .intro-box h1 {
-            color: var(--accent);
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 15px;
-        }
-        .intro-box p {
-            color: #4A5568;
-            font-size: 16px;
-        }
-        .form-container {
-            background: #ffffff;
-            padding: 50px;
-            border-radius: 24px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(0, 122, 135, 0.05);
-        }
-        .form-section {
-            margin-bottom: 45px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #EDF2F7;
-        }
-        .form-section:last-of-type { border-bottom: none; }
-        .form-section-title {
-            font-size: 20px;
-            color: var(--primary);
-            margin-bottom: 30px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-        .form-group { margin-bottom: 24px; }
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            color: #2D3748;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="date"],
-        select {
-            width: 100%;
-            padding: 14px 20px;
-            border: 1.5px solid #E2E8F0;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: inherit;
-            color: var(--text-main);
-            background-color: #FAFCFF;
-            transition: var(--transition);
-            outline: none;
-        }
-        input:focus, select:focus {
-            border-color: var(--primary);
-            background-color: #ffffff;
-            box-shadow: 0 0 0 4px rgba(0, 122, 135, 0.12);
-        }
-        .file-dropzone {
-            position: relative;
-            border: 2px dashed #CBD5E0;
-            padding: 30px 20px;
-            border-radius: 14px;
-            background: #FAFCFF;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .file-dropzone:hover {
-            background: var(--primary-light);
-            border-color: var(--primary);
-        }
-        .file-dropzone input[type="file"] {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-        .file-dropzone span {
-            display: block;
-            font-weight: 600;
-            font-size: 15px;
-            color: #4A5568;
-            margin-bottom: 5px;
-        }
-        .file-info {
-            font-size: 13px;
-            color: var(--text-muted);
-            max-width: 500px;
-            margin: 8px auto 0;
-        }
-        .file-selected {
-            margin-top: 10px;
-            font-size: 13px;
-            color: var(--primary);
-            font-weight: 600;
-            word-break: break-all;
-        }
-        .bank-details {
-            background: linear-gradient(180deg, #FAFCFF 0%, #F0F4F8 100%);
-            border: 1px solid #E2E8F0;
-            padding: 25px;
-            border-radius: 16px;
-            margin-top: 20px;
-        }
-        .bank-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .bank-item {
-            background: #ffffff;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #E2E8F0;
-            font-size: 13px;
-        }
-        .bank-item span {
-            display: block;
-            color: var(--text-muted);
-            font-size: 11px;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .terms-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            margin-top: 40px;
-            background: var(--accent-light);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(165, 28, 36, 0.1);
-        }
-        .terms-container input {
-            width: 18px;
-            height: 18px;
-            margin-top: 3px;
-            accent-color: var(--accent);
-            cursor: pointer;
-        }
-        .terms-container label {
-            margin-bottom: 0;
-            color: #5c1014;
-            font-size: 14px;
-            line-height: 1.5;
-            cursor: pointer;
-        }
-        .submit-btn {
-            display: block;
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            padding: 18px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-top: 35px;
-            box-shadow: 0 10px 25px rgba(0, 122, 135, 0.25);
-            transition: var(--transition);
-        }
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(0, 122, 135, 0.4);
-        }
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-        .alert {
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            font-weight: 600;
-            text-align: center;
-        }
-        .alert-success {
-            background: #c6f6d5;
-            color: #22543d;
-            border: 1px solid #9ae6b4;
-        }
-        .alert-error {
-            background: #fed7d7;
-            color: #742a2a;
-            border: 1px solid #fc8181;
-        }
-        .frais-display {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--accent);
-            margin: 10px 0 20px;
-        }
-        @media (max-width: 768px) {
-            .flyer-showcase, .grid-2, .bank-grid { grid-template-columns: 1fr; }
-            .form-container { padding: 25px; }
-            .intro-box { padding: 20px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CONCOURS SPÉCIAL D’EXCELLENCE | CREDO ENGINEERING</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+--primary: #007A87;
+--primary-light: #e6f2f3;
+--primary-dark: #005F69;
+--accent: #A51C24;
+--accent-light: #fbeeed;
+--text-main: #1A202C;
+--text-muted: #718096;
+--bg-body: #F8FAFC;
+--card-shadow: 0 10px 30px -5px rgba(0, 122, 135, 0.08);
+--transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+font-family: 'Plus Jakarta Sans', sans-serif;
+background-color: var(--bg-body);
+color: var(--text-main);
+line-height: 1.7;
+padding-bottom: 60px;
+}
+.credo-header {
+background: rgba(255, 255, 255, 0.85);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid rgba(0, 122, 135, 0.1);
+padding: 20px 0;
+text-align: center;
+position: sticky;
+top: 0;
+z-index: 100;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+.credo-header h2 {
+font-weight: 800;
+font-size: 22px;
+letter-spacing: 1.5px;
+color: var(--primary);
+}
+.main-container {
+max-width: 900px;
+margin: 40px auto;
+padding: 0 24px;
+}
+.flyer-showcase {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 30px;
+margin-bottom: 40px;
+}
+.flyer-card {
+background: #ffffff;
+border-radius: 16px;
+overflow: hidden;
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+border: 1px solid rgba(0, 0, 0, 0.03);
+transition: var(--transition);
+}
+.flyer-card:hover {
+transform: translateY(-8px);
+box-shadow: 0 30px 60px rgba(0, 122, 135, 0.12);
+}
+.flyer-card img {
+width: 100%;
+height: auto;
+display: block;
+object-fit: cover;
+}
+.intro-box {
+background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%);
+border-left: 6px solid var(--accent);
+padding: 35px;
+border-radius: 16px;
+margin-bottom: 40px;
+box-shadow: var(--card-shadow);
+}
+.intro-box h1 {
+color: var(--accent);
+font-size: 28px;
+font-weight: 800;
+margin-bottom: 15px;
+}
+.intro-box p {
+color: #4A5568;
+font-size: 16px;
+}
+.form-container {
+background: #ffffff;
+padding: 50px;
+border-radius: 24px;
+box-shadow: var(--card-shadow);
+border: 1px solid rgba(0, 122, 135, 0.05);
+}
+.form-section {
+margin-bottom: 45px;
+padding-bottom: 30px;
+border-bottom: 1px solid #EDF2F7;
+}
+.form-section:last-of-type { border-bottom: none; }
+.form-section-title {
+font-size: 20px;
+color: var(--primary);
+margin-bottom: 30px;
+font-weight: 700;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.grid-2 {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 24px;
+}
+.form-group { margin-bottom: 24px; }
+label {
+display: block;
+margin-bottom: 10px;
+font-weight: 600;
+font-size: 14px;
+color: #2D3748;
+}
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+width: 100%;
+padding: 14px 20px;
+border: 1.5px solid #E2E8F0;
+border-radius: 12px;
+font-size: 15px;
+font-family: inherit;
+color: var(--text-main);
+background-color: #FAFCFF;
+transition: var(--transition);
+outline: none;
+}
+input:focus, select:focus {
+border-color: var(--primary);
+background-color: #ffffff;
+box-shadow: 0 0 0 4px rgba(0, 122, 135, 0.12);
+}
+.file-dropzone {
+position: relative;
+border: 2px dashed #CBD5E0;
+padding: 30px 20px;
+border-radius: 14px;
+background: #FAFCFF;
+text-align: center;
+cursor: pointer;
+transition: var(--transition);
+}
+.file-dropzone:hover {
+background: var(--primary-light);
+border-color: var(--primary);
+}
+.file-dropzone input[type="file"] {
+position: absolute;
+top: 0; left: 0; width: 100%; height: 100%;
+opacity: 0;
+cursor: pointer;
+}
+.file-dropzone span {
+display: block;
+font-weight: 600;
+font-size: 15px;
+color: #4A5568;
+margin-bottom: 5px;
+}
+.file-info {
+font-size: 13px;
+color: var(--text-muted);
+max-width: 500px;
+margin: 8px auto 0;
+}
+.bank-details {
+background: linear-gradient(180deg, #FAFCFF 0%, #F0F4F8 100%);
+border: 1px solid #E2E8F0;
+padding: 25px;
+border-radius: 16px;
+margin-top: 20px;
+}
+.bank-grid {
+display: grid;
+grid-template-columns: 1fr 2fr 2fr;
+gap: 15px;
+margin-top: 15px;
+}
+@media (min-width: 769px) {
+    .bank-grid {
+        grid-template-columns: 1Vfr 2fr 3fr;
+    }
+}
+.bank-item {
+background: #ffffff;
+padding: 12px;
+border-radius: 8px;
+border: 1px solid #E2E8F0;
+font-size: 13px;
+}
+.bank-item span {
+display: block;
+color: var(--text-muted);
+font-size: 11px;
+text-transform: uppercase;
+margin-bottom: 4px;
+}
+.terms-container {
+display: flex;
+align-items: flex-start;
+gap: 14px;
+margin-top: 40px;
+background: var(--accent-light);
+padding: 20px;
+border-radius: 12px;
+border: 1px solid rgba(165, 28, 36, 0.1);
+}
+.terms-container input {
+width: 18px;
+height: 18px;
+margin-top: 3px;
+accent-color: var(--accent);
+cursor: pointer;
+}
+.terms-container label {
+margin-bottom: 0;
+color: #5c1014;
+font-size: 14px;
+line-height: 1.5;
+cursor: pointer;
+}
+.submit-btn {
+display: block;
+width: 100%;
+background: linear-gradient(135deg, var(--accent) 0%, #84141A 100%);
+color: white;
+border: none;
+padding: 18px;
+font-size: 16px;
+font-weight: 700;
+border-radius: 12px;
+cursor: pointer;
+margin-top: 35px;
+box-shadow: 0 10px 25px rgba(165, 28, 36, 0.25);
+transition: var(--transition);
+text-align: center;
+text-decoration: none;
+}
+.submit-btn:hover:not(:disabled) {
+transform: translateY(-2px);
+box-shadow: 0 15px 30px rgba(165, 28, 36, 0.4);
+}
+.submit-btn:disabled {
+opacity: 0.7;
+cursor: not-allowed;
+background: #718096;
+box-shadow: none;
+}
+.alert {
+padding: 20px;
+border-radius: 12px;
+margin-bottom: 30px;
+font-weight: 600;
+text-align: center;
+}
+.alert-success {
+background: #c6f6d5;
+color: #22543d;
+border: 1px solid #9ae6b4;
+}
+.alert-error {
+background: #fed7d7;
+color: #742a2a;
+border: 1px solid #fc8181;
+}
+.frais-display {
+font-size: 24px;
+font-weight: 800;
+color: var(--accent);
+margin: 10px 0 20px;
+}
+@media (max-width: 768px) {
+.flyer-showcase, .grid-2, .bank-grid { grid-template-columns: 1fr; }
+.form-container { padding: 25px; }
+.intro-box { padding: 20px; }
+}
+</style>
 </head>
 <body>
 
-    <header class="credo-header">
-        <h2>CREDO ENGINEERING</h2>
-    </header>
+<header class="credo-header">
+    <h2>CREDO ENGINEERING</h2>
+</header>
 
-    <div class="main-container">
-        <div class="flyer-showcase">
-            <div class="flyer-card">
-                <img src="photo_2026-06-08_16-38-30.jpg" alt="Flyer 1">
-            </div>
-            <div class="flyer-card">
-                <img src="photo_2026-06-08_16-38-45.jpg" alt="Flyer 2">
-            </div>
+<div class="main-container">
+    <div class="flyer-showcase">
+        <div class="flyer-card">
+            <img src="photo_2026-06-08_16-38-30.jpg" alt="Flyer 1">
         </div>
-
-        <div class="intro-box">
-            <h1>Concours Spécial d'Excellence</h1>
-            <p>Bienvenue sur la plateforme de dépôt des candidatures pour le concours spécial d'excellence organisé par <strong>CREDO ENGINEERING</strong>. Veuillez remplir soigneusement ce formulaire et joindre toutes les pièces requises. Toute candidature incomplète sera rejetée.</p>
-        </div>
-
-        <div class="form-container">
-            <div id="alertBox"></div>
-
-            <form id="credoForm">
-                <div class="form-section">
-                    <div class="form-section-title">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z"/></svg>
-                        Section I - Informations Personnelles
-                    </div>
-                    <div class="form-group">
-                        <label>Nom Complet *</label>
-                        <input type="text" name="nomComplet" placeholder="Ex: Nom Prénom" required>
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Date de Naissance *</label>
-                            <input type="date" name="dateNaissance" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Lieu de Naissance *</label>
-                            <input type="text" name="lieuNaissance" placeholder="Ex: Douala" required>
-                        </div>
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Pays de Résidence *</label>
-                            <input type="text" name="paysResidence" placeholder="Ex: Cameroun" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Numéro de Téléphone *</label>
-                            <input type="text" name="telephone" placeholder="Ex: +237 677 60 42 34" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Adresse Mail *</label>
-                        <input type="email" name="email" placeholder="Ex: adresse@domaine.com" required>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <div class="form-section-title">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-                        Section II - Constitution du Dossier
-                    </div>
-                    <div class="form-group">
-                        <label>Documents d'admission regroupés (PDF Unique) *</label>
-                        <div class="file-dropzone" onclick="document.getElementById('dossier').click()">
-                            <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-                            <span id="dossierLabel">Glissez-déposez votre dossier ici ou cliquez pour choisir</span>
-                            <input type="file" id="dossier" name="dossier" accept=".pdf" required onchange="updateFileName(this, 'dossierLabel')">
-                            <div class="file-info">Doit contenir : Demande manuscrite, Bac, CNI, CV, Certificat Médical dans un unique PDF.</div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Trois photos d'identité prises de face *</label>
-                        <div class="file-dropzone" onclick="document.getElementById('photos').click()">
-                            <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                            <span id="photosLabel">Sélectionner vos 3 photos d'identité réglementaires</span>
-                            <input type="file" id="photos" name="photos" accept="image/*" multiple required onchange="updateFileName(this, 'photosLabel')">
-                            <div class="file-info">Prises de face, sans chapeau ni foulard. Sélectionnez les 3 fichiers simultanément.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <div class="form-section-title">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 .67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                        Section III - Frais de Concours et Paiements
-                    </div>
-                    <div class="form-group">
-                        <label>Frais de participation :</label>
-                        <div class="frais-display">10 000 FCFA</div>
-                    </div>
-                    <div class="form-group">
-                        <label>Mode de Paiement effectué *</label>
-                        <select name="modePaiement" required>
-                            <option value="">-- Sélectionnez --</option>
-                            <option value="Paiement en ligne">Paiement en ligne</option>
-                            <option value="Virement bancaire">Virement bancaire</option>
-                        </select>
-                    </div>
-                    <div class="bank-details">
-                        <strong>Coordonnées bancaires :</strong>
-                        <div class="bank-grid">
-                            <div class="bank-item"><span>Établissement</span><strong>UBA</strong></div>
-                            <div class="bank-item"><span>Intitulé</span><strong>CREDO ENGINEERING</strong></div>
-                            <div class="bank-item"><span>Compte</span><strong>[Insérer numéro]</strong></div>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-top:30px">
-                        <label>Preuve de paiement (Reçu ou Capture) *</label>
-                        <div class="file-dropzone" onclick="document.getElementById('preuve').click()">
-                            <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                            <span id="preuveLabel">Téléverser la pièce justificative</span>
-                            <input type="file" id="preuve" name="preuve" accept=".pdf,image/*" required onchange="updateFileName(this, 'preuveLabel')">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="terms-container">
-                    <input type="checkbox" id="accept" name="engagement" value="Conditions Acceptees" required>
-                    <label for="accept">J'accepte expressément les conditions de participation et certifie l'authenticité absolue de toutes les pièces transmises.</label>
-                </div>
-
-                <button type="submit" class="submit-btn" id="submitBtn">Soumettre ma candidature officielle</button>
-            </form>
+        <div class="flyer-card">
+            <img src="photo_2026-06-08_16-38-45.jpg" alt="Flyer 2">
         </div>
     </div>
 
-    <script>
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGZ_15qPPprk964ghroJrBmazYVfnGzZhiXamakNFGmSjLip1BYtf2lG9vOMPi3cAq/exec';
+    <div class="intro-box">
+        <h1>CONCOURS SPÉCIAL D’EXCELLENCE</h1>
+        <p>Bienvenue sur la plateforme de dépôt des candidatures pour le concours spécial d'excellence organisé par <strong>CREDO ENGINEERING</strong>. Veuillez remplir soigneusement ce formulaire et joindre toutes les pièces requises. Toute candidature incomplète sera rejetée.</p>
+    </div>
 
-        function updateFileName(input, labelId) {
-            const label = document.getElementById(labelId);
-            if (input.files.length > 1) {
-                label.textContent = '✓ ' + input.files.length + ' fichiers sélectionnés';
-            } else if (input.files.length === 1) {
-                label.textContent = '✓ ' + input.files[0].name;
-            }
+    <div class="form-container">
+        <div id="alertBox"></div>
+
+        <form id="credoForm">
+            <!-- Section I -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z"/></svg>
+                    Section I - Informations Personnelles
+                </div>
+                <div class="form-group">
+                    <label>Nom Complet *</label>
+                    <input type="text" name="nomComplet" placeholder="Ex: Nom Prénom" required>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Date de Naissance *</label>
+                        <input type="date" name="dateNaissance" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Lieu de Naissance *</label>
+                        <input type="text" name="lieuNaissance" placeholder="Ex: Douala" required>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Pays de Résidence *</label>
+                        <input type="text" name="paysResidence" placeholder="Ex: Cameroun" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Numéro de Téléphone *</label>
+                        <input type="text" name="telephone" placeholder="Ex: +237 677 60 42 34" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Adresse Mail *</label>
+                    <input type="email" name="email" placeholder="Ex: adresse@domaine.com" required>
+                </div>
+            </div>
+
+            <!-- Section II -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    Section II - Constitution du Dossier
+                </div>
+                <div class="form-group">
+                    <label>Documents d'admission regroupés (PDF Unique) *</label>
+                    <div class="file-dropzone" onclick="document.getElementById('dossier').click()">
+                        <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                        <span id="dossierLabel">Glissez-déposez votre dossier ici ou cliquez pour choisir</span>
+                        <input type="file" id="dossier" name="dossier" accept=".pdf" required onchange="updateFileName(this, 'dossierLabel')">
+                        <div class="file-info">Doit contenir : Demande manuscrite, Bac, CNI, CV, Certificat Médical dans un unique PDF.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Trois photos d'identité prises de face *</label>
+                    <div class="file-dropzone" onclick="document.getElementById('photos').click()">
+                        <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                        <span id="photosLabel">Sélectionner vos 3 photos d'identité réglementaires</span>
+                        <input type="file" id="photos" name="photos" accept="image/*" multiple required onchange="updateFileName(this, 'photosLabel')">
+                        <div class="file-info">Prises de face, sans chapeau ni foulard. Sélectionnez les 3 fichiers simultanément.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section III -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5 .67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    Section III - Frais de Concours et Paiements
+                </div>
+                <div class="form-group">
+                    <label>Frais de participation :</label>
+                    <div class="frais-display">10 000 FCFA</div>
+                </div>
+                <div class="form-group">
+                    <label>Mode de Paiement effectué *</label>
+                    <select name="modePaiement" id="modePaiement" required>
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="Paiement en ligne via KratosPay">Paiement en ligne via KratosPay</option>
+                        <option value="Virement bancaire">Virement bancaire</option>
+                    </select>
+                </div>
+                <div class="bank-details">
+                    <strong>Coordonnées bancaires (Pour virement alternatif) :</strong>
+                    <div class="bank-grid">
+                        <div class="bank-item"><span>Établissement</span><strong>UBA Cameroun</strong></div>
+                        <div class="bank-item"><span>Intitulé du compte</span><strong>CREDO ENGINEERING AND CONSULTING SARL</strong></div>
+                        <div class="bank-item"><span>Numéro de compte / RIB</span><strong>10033 05207 07011001500 31</strong></div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top:30px">
+                    <label>Preuve de paiement (Reçu ou Capture d'écran KratosPay/Virement) *</label>
+                    <div class="file-dropzone" onclick="document.getElementById('preuve').click()">
+                        <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <span id="preuveLabel">Téléverser la pièce justificative</span>
+                        <input type="file" id="preuve" name="preuve" accept=".pdf,image/*" required onchange="updateFileName(this, 'preuveLabel')">
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms-container">
+                <input type="checkbox" id="accept" name="engagement" value="Conditions Acceptees" required>
+                <label for="accept">J'accepte expressément les conditions de participation et certifie l'authenticité absolue de toutes les pièces transmises.</label>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Procéder au paiement & valider ma candidature</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGZ_15qPPprk964ghroJrBmazYVfnGzZhiXamakNFGmSjLip1BYtf2lG9vOMPi3cAq/exec';
+    const KRATOSPAY_URL = 'https://payment.kratospay.com/?token=2e91d649-e0f7-4fd3-a7f5-8c7db368c04d&name=CREDO%20ENGINEERING%20&%20CONSULTING%20%20&type_commerce=Prestations%20de%20services%20et%20autres';
+
+    function updateFileName(input, labelId) {
+        const label = document.getElementById(labelId);
+        if (input.files.length > 1) {
+            label.textContent = '✓ ' + input.files.length + ' fichiers sélectionnés';
+        } else if (input.files.length === 1) {
+            label.textContent = '✓ ' + input.files[0].name;
         }
+    }
 
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = (error) => reject(error);
-            });
-        }
-
-        document.getElementById('credoForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const alertBox = document.getElementById('alertBox');
-            
-            btn.disabled = true;
-            btn.textContent = 'Envoi en cours...';
-            alertBox.innerHTML = '';
-
-            const form = e.target;
-            const dossierFile = form.dossier.files[0];
-            const photosFiles = Array.from(form.photos.files);
-            const preuveFile = form.preuve.files[0];
-
-            try {
-                const payload = {
-                    nomComplet: form.nomComplet.value,
-                    dateNaissance: form.dateNaissance.value,
-                    lieuNaissance: form.lieuNaissance.value,
-                    paysResidence: form.paysResidence.value,
-                    telephone: form.telephone.value,
-                    email: form.email.value,
-                    modePaiement: form.modePaiement.value,
-                    engagement: form.engagement.checked ? 'Conditions Acceptees' : 'Non acceptees',
-                    dossier: dossierFile ? await fileToBase64(dossierFile) : '',
-                    dossierName: dossierFile ? dossierFile.name : '',
-                    preuve: preuveFile ? await fileToBase64(preuveFile) : '',
-                    preuveName: preuveFile ? preuveFile.name : '',
-                };
-
-                const photosBase64 = await Promise.all(photosFiles.map(f => fileToBase64(f)));
-                payload.photos = JSON.stringify(photosBase64);
-                payload.photosNames = JSON.stringify(photosFiles.map(f => f.name));
-
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    alertBox.innerHTML = '<div class="alert alert-success">✅ Candidature envoyée avec succès ! Les fichiers ont été transmis à infos@ifcd-credo.com.</div>';
-                    form.reset();
-                    document.getElementById('dossierLabel').textContent = 'Glissez-déposez votre dossier ici ou cliquez pour choisir';
-                    document.getElementById('photosLabel').textContent = 'Sélectionner vos 3 photos d\'identité réglementaires';
-                    document.getElementById('preuveLabel').textContent = 'Téléverser la pièce justificative';
-                } else {
-                    throw new Error(result.message);
-                }
-            } catch (error) {
-                console.error(error);
-                alertBox.innerHTML = '<div class="alert alert-error">❌ Échec de l\'envoi. Veuillez réessayer.</div>';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Soumettre ma candidature officielle';
-            }
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = (error) => reject(error);
         });
-    </script>
+    }
+
+    document.getElementById('credoForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const alertBox = document.getElementById('alertBox');
+        
+        btn.disabled = true;
+        btn.textContent = 'Enregistrement de la candidature...';
+        alertBox.innerHTML = '';
+
+        const form = e.target;
+        const dossierFile = form.dossier.files[0];
+        const photosFiles = Array.from(form.photos.files);
+        const preuveFile = form.preuve.files[0];
+
+        try {
+            const payload = {
+                nomComplet: form.nomComplet.value,
+                dateNaissance: form.dateNaissance.value,
+                lieuNaissance: form.lieuNaissance.value,
+                paysResidence: form.paysResidence.value,
+                telephone: form.telephone.value,
+                email: form.email.value,
+                modePaiement: form.modePaiement.value,
+                engagement: form.engagement.checked ? 'Conditions Acceptees' : 'Non acceptees',
+                dossier: dossierFile ? await fileToBase64(dossierFile) : '',
+                dossierName: dossierFile ? dossierFile.name : '',
+                preuve: preuveFile ? await fileToBase64(preuveFile) : '',
+                preuveName: preuveFile ? preuveFile.name : '',
+            };
+
+            const photosBase64 = await Promise.all(photosFiles.map(f => fileToBase64(f)));
+            payload.photos = JSON.stringify(photosBase64);
+            payload.photosNames = JSON.stringify(photosFiles.map(f => f.name));
+
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alertBox.innerHTML = '<div class="alert alert-success">✅ Candidature enregistrée ! Redirection vers la plateforme de paiement KratosPay en cours...</div>';
+                
+                form.reset();
+                document.getElementById('dossierLabel').textContent = 'Glissez-déposez votre dossier ici ou cliquez pour choisir';
+                document.getElementById('photosLabel').textContent = 'Sélectionner vos 3 photos d\'identité réglementaires';
+                document.getElementById('preuveLabel').textContent = 'Téléverser la pièce justificative';
+
+                // Redirection vers le lien KratosPay après 2.5 secondes
+                setTimeout(() => {
+                    window.location.href = KRATOSPAY_URL;
+                }, 2500);
+
+            } else {
+                throw new Error(result.message);
+            }
+        } catch (error) {
+            console.error(error);
+            alertBox.innerHTML = '<div class="alert alert-error">❌ Échec de l\'envoi. Veuillez réessayer.</div>';
+            btn.disabled = false;
+            btn.textContent = 'Procéder au paiement & valider ma candidature';
+        }
+    });
+</script>
 </body>
 </html>
