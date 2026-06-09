@@ -563,9 +563,9 @@ margin: 10px 0 20px;
 </div>
 
 <script>
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMGLhYm1psGVbamY7NpT4s6m-x1XwXyjp3QWl98qxBfP4NQmQcsr-7IxItHA4QgFPT/exec';
+    // URL mise à jour avec votre nouveau déploiement actif
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxrIzexoA3-COIfSlSuOGfrDuhYD4y3ty8YwUNOwttUevobZomShAg0eQdpk7It12nD/exec';
 
-    // Empêcher le double déclenchement lors du clic sur le dropzone
     document.querySelectorAll('.file-dropzone').forEach(dropzone => {
         dropzone.addEventListener('click', function(e) {
             const input = this.querySelector('input[type="file"]');
@@ -635,7 +635,6 @@ margin: 10px 0 20px;
         });
     }
 
-    // Traitement de la soumission avec gestion réseau sécurisée
     document.getElementById('credoForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
@@ -687,7 +686,6 @@ margin: 10px 0 20px;
                 photosNames: JSON.stringify(photosNames)
             };
 
-            // Envoi en mode text/plain (no-cors) pour forcer le passage à travers les filtres du navigateur
             const response = await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors', 
@@ -695,7 +693,6 @@ margin: 10px 0 20px;
                 headers: { 'Content-Type': 'text/plain' }
             });
 
-            // Avec 'no-cors', si l'envoi physique au serveur aboutit, on affiche le succès.
             alertBox.innerHTML = '<div class="alert alert-success">✅ Candidature soumise avec succès ! Vos informations et documents ont été transmis au destinataire.</div>';
             
             form.reset();
