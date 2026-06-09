@@ -18,7 +18,6 @@
 --bg-body: #F8FAFC;
 --card-shadow: 0 10px 30px -5px rgba(0, 122, 135, 0.08);
 --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-/* Nouvelles variables pour l'état de fichier valide */
 --success-border: #10B981;
 --success-bg: #F0FDF4;
 }
@@ -163,7 +162,6 @@ transition: var(--transition);
 background: var(--primary-light);
 border-color: var(--primary);
 }
-/* Style appliqué dynamiquement en JS quand un fichier est valide */
 .file-dropzone.has-file {
 background-color: var(--success-bg);
 border-color: var(--success-border);
@@ -459,7 +457,7 @@ margin: 10px 0 20px;
                 </div>
                 <div class="form-group">
                     <label>Documents d'admission regroupés (PDF Unique) *</label>
-                    <div class="file-dropzone" onclick="document.getElementById('dossier').click()">
+                    <div class="file-dropzone">
                         <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
                         <span id="dossierLabel">Glissez-déposez votre dossier ici ou cliquez pour choisir</span>
                         <input type="file" id="dossier" name="dossier" accept=".pdf" required onchange="updateFileName(this, 'dossierLabel')">
@@ -468,7 +466,7 @@ margin: 10px 0 20px;
                 </div>
                 <div class="form-group">
                     <label>Trois photos d'identité prises de face *</label>
-                    <div class="file-dropzone" onclick="document.getElementById('photos').click()">
+                    <div class="file-dropzone">
                         <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
                         <span id="photosLabel">Sélectionner vos 3 photos d'identité réglementaires</span>
                         <input type="file" id="photos" name="photos" accept="image/*" multiple required onchange="updateFileName(this, 'photosLabel')">
@@ -499,7 +497,7 @@ margin: 10px 0 20px;
 
                 <div class="form-group" style="margin-top: 28px;">
                     <label>Fiche d'inscription complétée (PDF) *</label>
-                    <div class="file-dropzone" onclick="document.getElementById('ficheInscription').click()">
+                    <div class="file-dropzone">
                         <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
                         <span id="ficheLabel">Glissez-déposez la fiche complétée ici ou cliquez pour choisir</span>
                         <input type="file" id="ficheInscription" name="ficheInscription" accept=".pdf" required onchange="updateFileName(this, 'ficheLabel')">
@@ -546,7 +544,7 @@ margin: 10px 0 20px;
 
                 <div class="form-group" id="preuveGroup" style="margin-top:30px; display: none;">
                     <label>Preuve de paiement (Reçu ou Capture d'écran obligatoire) *</label>
-                    <div class="file-dropzone" onclick="document.getElementById('preuve').click()">
+                    <div class="file-dropzone">
                         <svg viewBox="0 0 24 24" width="36" height="36" fill="#718096"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                         <span id="preuveLabel">Téléverser la pièce justificative (Image ou PDF)</span>
                         <input type="file" id="preuve" name="preuve" accept=".pdf,image/*" onchange="updateFileName(this, 'preuveLabel')">
@@ -567,6 +565,22 @@ margin: 10px 0 20px;
 <script>
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGZ_15qPPprk964ghroJrBmazYVfnGzZhiXamakNFGmSjLip1BYtf2lG9vOMPi3cAq/exec';
 
+    // Nouvelle gestion propre des clics sur les dropzones pour éviter la double-ouverture / lag
+    document.querySelectorAll('.file-dropzone').forEach(dropzone => {
+        dropzone.addEventListener('click', function(e) {
+            const input = this.querySelector('input[type="file"]');
+            // Si le clic vient directement de l'input caché, on arrête la propagation pour couper le loop
+            if (e.target === input) {
+                e.stopPropagation();
+                return;
+            }
+            // Sinon, si on clique sur la div globale, on simule le clic sur l'input une SEULE fois
+            if (input) {
+                input.click();
+            }
+        });
+    });
+
     function togglePaymentMethods(value) {
         const kratosSec = document.getElementById('kratosSection');
         const bankSec = document.getElementById('bankSection');
@@ -580,7 +594,6 @@ margin: 10px 0 20px;
             preuveInput.required = false;      
             preuveInput.value = "";            
             document.getElementById('preuveLabel').textContent = "Téléverser la pièce justificative (Image ou PDF)";
-            // Retirer le style "has-file" de la preuve si masquée
             preuveInput.parentElement.classList.remove('has-file');
         } else if (value === "Virement bancaire") {
             bankSec.style.display = 'block';
@@ -595,19 +608,17 @@ margin: 10px 0 20px;
         }
     }
 
-    // Fonction mise à jour pour gérer dynamiquement l'ajout d'une classe CSS d'état valide
     function updateFileName(input, labelId) {
         const label = document.getElementById(labelId);
-        const dropzone = input.parentElement; // Cible le conteneur .file-dropzone
+        const dropzone = input.parentElement;
         
         if (input.files.length > 1) {
             label.textContent = '✓ ' + input.files.length + ' fichiers sélectionnés';
-            dropzone.classList.add('has-file'); // Ajoute la classe de succès visuel
+            dropzone.classList.add('has-file');
         } else if (input.files.length === 1) {
             label.textContent = '✓ ' + input.files[0].name;
-            dropzone.classList.add('has-file'); // Ajoute la classe de succès visuel
+            dropzone.classList.add('has-file');
         } else {
-            // Si l'utilisateur annule le choix du fichier (cas de réinitialisation spontanée)
             dropzone.classList.remove('has-file');
             if (labelId === 'dossierLabel') label.textContent = "Glissez-déposez votre dossier ici ou cliquez pour choisir";
             if (labelId === 'photosLabel') label.textContent = "Sélectionner vos 3 photos d'identité réglementaires";
@@ -678,7 +689,6 @@ margin: 10px 0 20px;
                 document.getElementById('photosLabel').textContent = 'Sélectionner vos 3 photos d\'identité réglementaires';
                 document.getElementById('ficheLabel').textContent = 'Glissez-déposez la fiche complétée ici ou cliquez pour choisir';
                 
-                // Nettoyer les états de fichiers après soumission réussie
                 document.querySelectorAll('.file-dropzone').forEach(dropzone => {
                     dropzone.classList.remove('has-file');
                 });
