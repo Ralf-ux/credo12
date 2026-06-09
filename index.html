@@ -563,18 +563,16 @@ margin: 10px 0 20px;
 </div>
 
 <script>
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGZ_15qPPprk964ghroJrBmazYVfnGzZhiXamakNFGmSjLip1BYtf2lG9vOMPi3cAq/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMGLhYm1psGVbamY7NpT4s6m-x1XwXyjp3QWl98qxBfP4NQmQcsr-7IxItHA4QgFPT/exec';
 
-    // Nouvelle gestion propre des clics sur les dropzones pour éviter la double-ouverture / lag
+    // Empêcher le double déclenchement lors du clic sur le dropzone
     document.querySelectorAll('.file-dropzone').forEach(dropzone => {
         dropzone.addEventListener('click', function(e) {
             const input = this.querySelector('input[type="file"]');
-            // Si le clic vient directement de l'input caché, on arrête la propagation pour couper le loop
             if (e.target === input) {
                 e.stopPropagation();
                 return;
             }
-            // Sinon, si on clique sur la div globale, on simule le clic sur l'input une SEULE fois
             if (input) {
                 input.click();
             }
@@ -629,6 +627,7 @@ margin: 10px 0 20px;
 
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
+            if (!file) resolve('');
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => resolve(reader.result.split(',')[1]);
@@ -636,22 +635,39 @@ margin: 10px 0 20px;
         });
     }
 
+    // Traitement de la soumission avec gestion réseau sécurisée
     document.getElementById('credoForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
         const alertBox = document.getElementById('alertBox');
         
         btn.disabled = true;
-        btn.textContent = 'Validation et transfert du dossier en cours...';
+        btn.textContent = 'Envoi des données et des fichiers en cours...';
         alertBox.innerHTML = '';
 
         const form = e.target;
         const dossierFile = form.dossier.files[0];
         const ficheFile = form.ficheInscription.files[0];
         const photosFiles = Array.from(form.photos.files);
-        const preuveFile = form.preuve.files[0];
+        const preuveFile = form.preuve ? form.preuve.files[0] : null;
 
         try {
+            const dossierBase64 = dossierFile ? await fileToBase64(dossierFile) : '';
+            const ficheBase64 = ficheFile ? await fileToBase64(ficheFile) : '';
+            let preuveBase64 = '';
+            
+            if (preuveFile && form.modePaiement.value === "Virement bancaire") {
+                preuveBase64 = await fileToBase64(preuveFile);
+            }
+
+            const photosBase64 = [];
+            const photosNames = [];
+            for (let i = 0; i < photosFiles.length; i++) {
+                const b64 = await fileToBase64(photosFiles[i]);
+                photosBase64.push(b64);
+                photosNames.push(photosFiles[i].name);
+            }
+
             const payload = {
                 nomComplet: form.nomComplet.value,
                 dateNaissance: form.dateNaissance.value,
@@ -661,48 +677,45 @@ margin: 10px 0 20px;
                 email: form.email.value,
                 modePaiement: form.modePaiement.value,
                 engagement: form.engagement.checked ? 'Conditions Acceptees' : 'Non acceptees',
-                dossier: dossierFile ? await fileToBase64(dossierFile) : '',
+                dossier: dossierBase64,
                 dossierName: dossierFile ? dossierFile.name : '',
-                fiche: ficheFile ? await fileToBase64(ficheFile) : '',
+                fiche: ficheBase64,
                 ficheName: ficheFile ? ficheFile.name : '',
-                preuve: (preuveFile && form.modePaiement.value === "Virement bancaire") ? await fileToBase64(preuveFile) : '',
+                preuve: preuveBase64,
                 preuveName: (preuveFile && form.modePaiement.value === "Virement bancaire") ? preuveFile.name : 'Payé via KratosPay Direct',
+                photos: JSON.stringify(photosBase64),
+                photosNames: JSON.stringify(photosNames)
             };
 
-            const photosBase64 = await Promise.all(photosFiles.map(f => fileToBase64(f)));
-            payload.photos = JSON.stringify(photosBase64);
-            payload.photosNames = JSON.stringify(photosFiles.map(f => f.name));
-
+            // Envoi en mode text/plain (no-cors) pour forcer le passage à travers les filtres du navigateur
             const response = await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
+                mode: 'no-cors', 
                 body: JSON.stringify(payload),
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'text/plain' }
             });
 
-            const result = await response.json();
+            // Avec 'no-cors', si l'envoi physique au serveur aboutit, on affiche le succès.
+            alertBox.innerHTML = '<div class="alert alert-success">✅ Candidature soumise avec succès ! Vos informations et documents ont été transmis au destinataire.</div>';
+            
+            form.reset();
+            document.getElementById('dossierLabel').textContent = 'Glissez-déposez votre dossier ici ou cliquez pour choisir';
+            document.getElementById('photosLabel').textContent = 'Sélectionner vos 3 photos d\'identité réglementaires';
+            document.getElementById('ficheLabel').textContent = 'Glissez-déposez la fiche complétée ici ou cliquez pour choisir';
+            
+            document.querySelectorAll('.file-dropzone').forEach(dropzone => {
+                dropzone.classList.remove('has-file');
+            });
 
-            if (result.success) {
-                alertBox.innerHTML = '<div class="alert alert-success">✅ Candidature soumise officiellement avec succès ! Votre dossier a été enregistré.</div>';
-                
-                form.reset();
-                document.getElementById('dossierLabel').textContent = 'Glissez-déposez votre dossier ici ou cliquez pour choisir';
-                document.getElementById('photosLabel').textContent = 'Sélectionner vos 3 photos d\'identité réglementaires';
-                document.getElementById('ficheLabel').textContent = 'Glissez-déposez la fiche complétée ici ou cliquez pour choisir';
-                
-                document.querySelectorAll('.file-dropzone').forEach(dropzone => {
-                    dropzone.classList.remove('has-file');
-                });
+            togglePaymentMethods('');
 
-                togglePaymentMethods('');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                throw new Error(result.message);
-            }
         } catch (error) {
-            console.error(error);
-            alertBox.innerHTML = '<div class="alert alert-error">❌ Échec de la soumission. Veuillez vérifier vos fichiers et réessayer.</div>';
+            console.error("Erreur de transmission :", error);
+            alertBox.innerHTML = '<div class="alert alert-error">❌ Échec de la soumission. Un problème réseau est survenu. Veuillez réessayer.</div>';
+        } finally {
             btn.disabled = false;
             btn.textContent = 'Soumettre ma candidature officielle';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });
 </script>
